@@ -1,8 +1,5 @@
-# FactYoutubeChannel
-automate a youtube shorts channel with llms
+# WEEKLY YT
+Every week I'm making a fully automated Youtube channel, which hopefully get better over time
 
-# Example 
-https://www.youtube.com/shorts/89I3skH0UEc
-
-# Instructions
-You need to add in a google client json file with youtube enabled, and set up enviroment varibles for google gemini and pexels.
+# WEEK 1
+I made a script that uses google gemni to create a fact and choose a background thene, then put music over it, and used pexels to get a good video for the back
