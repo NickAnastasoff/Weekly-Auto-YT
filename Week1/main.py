@@ -65,7 +65,7 @@ def main():
 	cap = cv2.VideoCapture(f"{pathToRun}/clip.mp4")
 	frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 	my_video = mp.VideoFileClip(subclip.filename, audio=True)
-	w,h = moviesize = my_video.size
+	w,h = my_video.size
 
 	Ratio = int(w / phonewidth)
 
