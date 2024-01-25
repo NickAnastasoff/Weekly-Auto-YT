@@ -2,7 +2,7 @@ import csv
 import random
 import moviepy.editor as mp
 from constants import *
-
+from moviepy.editor import concatenate_videoclips
 
 def get_random_choices():
     """
@@ -70,20 +70,31 @@ def text_clip_from_choices(choices):
         text_clips.append(text_clip)
     return text_clips
 
+def make_background(top):
+    """
+    Creates a background clip with a red top, blue bottom and switch a side to green at the end.
+    """
+    green_back = mp.ColorClip((video_width, video_height), color=(0, 255, 0)).set_duration(video_length)
+    red_mask = mp.ColorClip((video_width, int(video_height / 2)), color=(255, 0, 0)).set_duration(video_length - green_length * top)
+    blue_mask = mp.ColorClip((video_width, int(video_height / 2)), color=(0, 0, 255)).set_duration(video_length - green_length * (1 - top))
+    background = mp.CompositeVideoClip(
+        [green_back, blue_mask.set_pos((0, video_height / 2)), red_mask.set_pos((0, 0))]
+    )
+    return background
+
 
 def main():
-    red_back = mp.ColorClip((video_width, video_height), color=(255, 0, 0))
-    blue_mask = mp.ColorClip((video_width, int(video_height / 2)), color=(0, 0, 255))
-    background = mp.CompositeVideoClip(
-        [red_back, blue_mask.set_pos((0, video_height / 2))]
-    )
-    background = background.set_duration(video_length)
+    final_clips = []
+    for iteration in range(iterations):
+        choices = get_random_choices()
+        text_clips = text_clip_from_choices(choices)
+        background = make_background(random.randint(0, 1))
 
-    choices = get_random_choices()
-    text_clips = text_clip_from_choices(choices)
+        final_clip = mp.CompositeVideoClip([background, *text_clips])
+        final_clips.append(final_clip)
 
-    final_clip = mp.CompositeVideoClip([background, *text_clips])
-    final_clip.write_videofile(f'{path}/would-you-rather.mp4', fps=24, codec='libx264')
+    combined_clip = concatenate_videoclips(final_clips)
+    combined_clip.write_videofile(f'{path}/would-you-rather.mp4', fps=24, codec='libx264')
 
 
 if __name__ == "__main__":

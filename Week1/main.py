@@ -78,17 +78,17 @@ def main():
 	start_txt_mov = textBox(openingText, 60, 0.5, 2, 100, 500, 4, 0, w, h, Ratio)
 
 	# Add the title
-	title_mov = textBox(title, 70, 1, 4, 150, 100, 10, 0, w, h, Ratio)
+	title_mov = textBox(title, 70, 1, 4, 150, 150, 10, 0, w, h, Ratio)
 
 	final = mp.CompositeVideoClip([my_video, start_txt_mov, end_txt_mov, title_mov])
 	final_clip = final.set_audio(music)
-	final_clip.subclip(0,6).write_videofile(f"{pathToRun}/Short.mov",codec='libx264')
+	final_clip.subclip(0,6).write_videofile(f"{pathToRun}/Short.mp4",codec='libx264')
 
 	os.remove(f"{pathToRun}/clip.mp4")
 	os.remove(f"{pathToRun}/random_clip.wav")
 	os.remove(f"{pathToRun}/background.mp4")
 
-	upload(title, videoDescription, f"{pathToRun}/Short.mov", pathToClient)
+	#upload(title, videoDescription, f"{pathToRun}/Short.mp4", pathToClient)
 
 if __name__ == "__main__":
 	main()
