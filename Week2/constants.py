@@ -4,5 +4,6 @@ video_length = 5
 green_length = 1
 
 path = "Week2"
+sfx = f"{path}/Sound Effects"
 
 iterations = 2

@@ -118,6 +118,13 @@ def main():
         text_clips = text_clip_from_choices(choices)
         background = make_background(random.randint(0, 1))
 
+        # play tick.mp3 until the start of green_length
+        tick = mp.AudioFileClip(f"{sfx}/tick.mp3").set_start(0).set_end(video_length - green_length)
+        correct = mp.AudioFileClip(f"{sfx}/correct.mp3").set_start(video_length - green_length)
+        audio_clip = mp.concatenate_audioclips([tick, correct])
+
+        background = background.set_audio(audio_clip)
+
         final_clip = mp.CompositeVideoClip([background, *image_clips, *text_clips])
         final_clips.append(final_clip)
 
