@@ -1,5 +1,5 @@
-# FactYoutubeChannel
-automate a youtube shorts channel with llms
+# WEEKLY YT
+Every week I'm making a fully automated Youtube channel, which hopefully get better over time
 
 <p float="left">
   <div>
