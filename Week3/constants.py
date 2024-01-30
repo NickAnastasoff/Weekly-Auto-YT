@@ -1,0 +1,3 @@
+PATH = 'Week3'
+VIDEO_DIR = f'{PATH}/Videos'
+NUM_ITERATIONS = 1
