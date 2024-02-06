@@ -11,25 +11,44 @@ from gemini import prompt
 from pexels import get_best_video
 import requests
 
-music = mp.AudioFileClip(f"{pathToMusic}/{(random.choice([f for f in os.listdir(pathToMusic) if not f.endswith('.DS_Store')]))}")
+music = mp.AudioFileClip(
+    f"{pathToMusic}/{(random.choice([f for f in os.listdir(pathToMusic) if not f.endswith('.DS_Store')]))}"
+)
 
-def textBox(text, fontsize, backOpacity, y, width, height, duration, startTime, w, h, Ratio):
-		# Create a text clip
-		text_clip = mp.TextClip(text, font='Amiri-regular', color='white', fontsize=fontsize * Ratio, size=((phonewidth-width) * Ratio, (height) * Ratio), method='caption')
 
-		# Add a background color to the text clip
-		text_clip = text_clip.on_color(size=(text_clip.w, text_clip.h+20), color=(0,0,0), pos=(0,'center'), col_opacity=backOpacity)
+def textBox(
+    text, fontsize, backOpacity, y, width, height, duration, startTime, w, h, Ratio
+):
+    # Create a text clip
+    text_clip = mp.TextClip(
+        text,
+        font="Amiri-regular",
+        color="white",
+        fontsize=fontsize * Ratio,
+        size=((phonewidth - width) * Ratio, (height) * Ratio),
+        method="caption",
+    )
 
-		# Move the text clip to the desired position
-		text_clip = text_clip.set_pos(lambda t: ((w-text_clip.w)/2, (h-text_clip.h)/y))
+    # Add a background color to the text clip
+    text_clip = text_clip.on_color(
+        size=(text_clip.w, text_clip.h + 20),
+        color=(0, 0, 0),
+        pos=(0, "center"),
+        col_opacity=backOpacity,
+    )
 
-		# Set the duration of the text clip
-		text_clip = text_clip.set_duration(duration)
+    # Move the text clip to the desired position
+    text_clip = text_clip.set_pos(
+        lambda t: ((w - text_clip.w) / 2, (h - text_clip.h) / y)
+    )
 
-		# Set the start time of the text clip
-		text_clip = text_clip.set_start(startTime)
+    # Set the duration of the text clip
+    text_clip = text_clip.set_duration(duration)
 
-		return text_clip
+    # Set the start time of the text clip
+    text_clip = text_clip.set_start(startTime)
+
+    return text_clip
 
 def main():
 	if not os.path.exists(pathToRun):
@@ -91,4 +110,4 @@ def main():
 	#upload(title, videoDescription, f"{pathToRun}/Short.mp4", pathToClient)
 
 if __name__ == "__main__":
-	main()
+    main()
