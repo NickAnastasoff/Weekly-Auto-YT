@@ -64,11 +64,9 @@ def search_images(query_string):
     url = "https://api.pexels.com/v1/search"
     headers = {"Authorization": PEXELS_API_KEY}
     params = {"query": query_string, "per_page": 1}
-
     response = requests.get(url, headers=headers, params=params)
     json_data = response.json()
     return json_data
-
 
 def get_best_images(query_strings):
     if not os.path.exists("Week2/images"):
@@ -92,7 +90,6 @@ def get_best_images(query_strings):
 
         # put in Week2/images
         image.save(f"Week2/images/{i}.jpg")
-
 
 #     image_urls = []
 # json_data = search_images("c")

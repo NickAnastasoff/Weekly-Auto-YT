@@ -1,8 +1,13 @@
-# FactYoutubeChannel
-automate a youtube shorts channel with llms
+# WEEKLY YT
+Every week I'm making a fully automated Youtube channel, which hopefully get better over time
 
-# Example 
-https://www.youtube.com/shorts/89I3skH0UEc
-
-# Instructions
-You need to add in a google client json file with youtube enabled, and set up enviroment varibles for google gemini and pexels.
+<p float="left">
+  <div>
+    <p>Week1</p>
+    <img src="assets/Week1.gif" width="300" />
+  </div>
+  <div>
+    <p>Week2</p>
+    <img src="assets/Week2.gif" width="300" />
+  </div>
+</p>

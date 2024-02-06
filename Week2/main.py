@@ -6,16 +6,15 @@ from moviepy.editor import concatenate_videoclips
 from pexels import get_best_images
 import os
 
-
 def get_random_choices():
     """
     Gets two random choices from the would-you-rather.csv file.
     """
+    
     with open(f"{path}/would-you-rather.csv", newline="") as csvfile:
         reader = csv.reader(csvfile, delimiter="*", quotechar="|")
         choices = random.sample(list(reader), 2)
     return choices
-
 
 def text_box(
     text="text",
@@ -29,6 +28,7 @@ def text_box(
     w=1080,
     h=1920,
 ):
+
     """
     Creates a text clip with a background color and a black outline.
 
@@ -74,7 +74,6 @@ def text_box(
 def text_clip_from_choices(choices):
     """
     Creates a list of text clips from a list of choices.
-
     Args:
         choices: A list of choices.
     """
@@ -92,8 +91,7 @@ def text_clip_from_choices(choices):
         )
         text_clips.append(text_clip)
     return text_clips
-
-
+  
 def resized_image_clip(image, duration=5, start_time=0, h=384, y=0):
     """
     Creates a resized image clip with a black outline.
@@ -168,10 +166,8 @@ def main():
     combined_clip.write_videofile(
         f"{path}/would-you-rather.mp4", fps=24, codec="libx264"
     )
-
     # delete images folder
     os.system("rm -rf Week2/images")
-
 
 if __name__ == "__main__":
     main()

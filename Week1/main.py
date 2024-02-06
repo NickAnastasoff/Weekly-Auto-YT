@@ -50,66 +50,64 @@ def textBox(
 
     return text_clip
 
-
 def main():
-    if not os.path.exists(pathToRun):
-        os.makedirs(pathToRun)
+	if not os.path.exists(pathToRun):
+		os.makedirs(pathToRun)
 
-    musicDuration = music.duration
-    start_time = random.uniform(0, musicDuration - videoLength)
-    clip = music.subclip(start_time, start_time + videoLength)
-    clip.write_audiofile(f"{pathToRun}/random_clip.wav")
+	musicDuration = music.duration
+	start_time = random.uniform(0, musicDuration - videoLength)
+	clip = music.subclip(start_time, start_time + videoLength)
+	clip.write_audiofile(f"{pathToRun}/random_clip.wav")
 
-    response = prompt(prompt_text)
-    print(response)
-    response = json.loads(response)
-    title = response["Title"]
-    openingText = response["Start"]
-    endingText = response["End"]
-    background = response["Background"]
-    print("video title: " + title)
-    print("opening text: " + openingText)
-    print("ending text: " + endingText)
-    print("background: " + background)
+	response = prompt(prompt_text)
+	print(response)
+	response = json.loads(response)
+	title = response['Title']
+	openingText = response['Start']
+	endingText = response['End']
+	background = response['Background']
+	print("video title: " + title)
+	print("opening text: " + openingText)
+	print("ending text: " + endingText)
+	print("background: " + background)
 
-    # Get the video
-    video_url = get_best_video(background, False)
-    with open(f"{pathToRun}/background.mp4", "wb") as f:
-        f.write(requests.get(video_url).content)
+	# Get the video
+	video_url = get_best_video(background, False)
+	with open(f"{pathToRun}/background.mp4", 'wb') as f:
+		f.write(requests.get(video_url).content)
+				
+	clip = mp.VideoFileClip(f"{pathToRun}/background.mp4")
+	videoDuration = clip.duration
+	start_time = random.uniform(0, videoDuration - videoLength)
+	subclip = clip.subclip(start_time, start_time + videoLength)
+	subclip.write_videofile(f"{pathToRun}/clip.mp4", fps=clip.fps)
+	cap = cv2.VideoCapture(f"{pathToRun}/clip.mp4")
+	frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+	my_video = mp.VideoFileClip(subclip.filename, audio=True)
+	w,h = my_video.size
 
-    clip = mp.VideoFileClip(f"{pathToRun}/background.mp4")
-    videoDuration = clip.duration
-    start_time = random.uniform(0, videoDuration - videoLength)
-    subclip = clip.subclip(start_time, start_time + videoLength)
-    subclip.write_videofile(f"{pathToRun}/clip.mp4", fps=clip.fps)
-    cap = cv2.VideoCapture(f"{pathToRun}/clip.mp4")
-    frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-    my_video = mp.VideoFileClip(subclip.filename, audio=True)
-    w, h = my_video.size
+	Ratio = int(w / phonewidth)
 
-    Ratio = int(w / phonewidth)
+	print("screen ratio: "+str(Ratio))
+	
+	# Add the ending text
+	end_txt_mov = textBox(endingText, 60, 0.5, 2, 100, 500, 5, 4, w, h, Ratio)
 
-    print("screen ratio: " + str(Ratio))
+	# Add the opening text
+	start_txt_mov = textBox(openingText, 60, 0.5, 2, 100, 500, 4, 0, w, h, Ratio)
 
-    # Add the ending text
-    end_txt_mov = textBox(endingText, 60, 0.5, 2, 100, 500, 5, 4, w, h, Ratio)
+	# Add the title
+	title_mov = textBox(title, 70, 1, 4, 150, 150, 10, 0, w, h, Ratio)
 
-    # Add the opening text
-    start_txt_mov = textBox(openingText, 60, 0.5, 2, 100, 500, 4, 0, w, h, Ratio)
+	final = mp.CompositeVideoClip([my_video, start_txt_mov, end_txt_mov, title_mov])
+	final_clip = final.set_audio(music)
+	final_clip.subclip(0,6).write_videofile(f"{pathToRun}/Short.mp4",codec='libx264')
 
-    # Add the title
-    title_mov = textBox(title, 70, 1, 4, 150, 150, 10, 0, w, h, Ratio)
+	os.remove(f"{pathToRun}/clip.mp4")
+	os.remove(f"{pathToRun}/random_clip.wav")
+	os.remove(f"{pathToRun}/background.mp4")
 
-    final = mp.CompositeVideoClip([my_video, start_txt_mov, end_txt_mov, title_mov])
-    final_clip = final.set_audio(music)
-    final_clip.subclip(0, 6).write_videofile(f"{pathToRun}/Short.mp4", codec="libx264")
-
-    os.remove(f"{pathToRun}/clip.mp4")
-    os.remove(f"{pathToRun}/random_clip.wav")
-    os.remove(f"{pathToRun}/background.mp4")
-
-    # upload(title, videoDescription, f"{pathToRun}/Short.mp4", pathToClient)
-
+	#upload(title, videoDescription, f"{pathToRun}/Short.mp4", pathToClient)
 
 if __name__ == "__main__":
     main()
